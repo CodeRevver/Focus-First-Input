@@ -14,7 +14,8 @@
       ],
       "js": [
         "inj.js"
-      ]
+      ],      
+      "css" : ["inj.css"]
     }
   ],
   "content_security_policy": "script-src 'self'; object-src 'self'"

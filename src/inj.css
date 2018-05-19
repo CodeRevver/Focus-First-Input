@@ -1,0 +1,12 @@
+a.focus-first-input-numeric-link {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+a[focus-first-input-numeric-link-number]:after{
+  content: attr(focus-first-input-numeric-link-number);
+  position: absolute;
+  top: -100%;
+  left: 0;
+}
