@@ -1,6 +1,6 @@
 // GLOBALS
 var keysPressed = [];
-var numericLinkOverlayEnabled = true;
+var numericLinkOverlayEnabled = false;
 var numericLinkAttributeIdentifierPrefix = 'focus-first-input-numeric-link-number';
 var numericLinkClass = 'focus-first-input-numeric-link';
 
