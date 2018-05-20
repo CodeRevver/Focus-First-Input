@@ -6,8 +6,12 @@
   "icons": {
     "128": "icon.png"
   },
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
+      "run_at": "document_start",
       "matches": [
         "http://*/*",
         "https://*/*"

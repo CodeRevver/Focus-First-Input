@@ -1,20 +1,29 @@
 a.focus-first-input-numeric-link {
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
 }
 
 a.focus-first-input-numeric-link[focus-first-input-numeric-link-number]:before {
+  display: inline-block;
   content: attr(focus-first-input-numeric-link-number);
   background-color: black;
   color: white;
-  text-align: center;  
-  width: auto;
-  padding: 5px;
+  text-align: center;
   border: 1px solid white;
   border-radius: 15px;
   position: absolute;
   z-index: 1;
-  min-width: 12px;
-  min-height: 12px;
+  padding: 5px;
+  min-width: 22px;  
+  /* min-height: 22px;   */
+  /* width: -webkit-fill-available; */
+  /* width: auto; */
+  /* height: 24px; */
+  height: initial;
+  text-indent: initial;
+  /* height: auto; */
+  line-height: 24px;
+  font-family: Roboto, Arial, sans-serif;
   font-size: 12px;
+  font-weight: bold;
 }
