@@ -1,5 +1,5 @@
 a.focus-first-input-numeric-link {
-  position: relative;
+  /* position: relative; */
   /* display: inline-block; */
 }
 
@@ -10,19 +10,14 @@ a.focus-first-input-numeric-link[focus-first-input-numeric-link-number]:before {
   color: white;
   text-align: center;
   border: 1px solid white;
-  border-radius: 15px;
+  border-radius: 5px;
   position: absolute;
   z-index: 1;
-  padding: 5px;
-  min-width: 22px;  
-  /* min-height: 22px;   */
-  /* width: -webkit-fill-available; */
-  /* width: auto; */
-  /* height: 24px; */
+  padding: 3px;
+  min-width: 22px;
   height: initial;
   text-indent: initial;
-  /* height: auto; */
-  line-height: 24px;
+  line-height: 12px;
   font-family: Roboto, Arial, sans-serif;
   font-size: 12px;
   font-weight: bold;
