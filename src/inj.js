@@ -54,8 +54,7 @@ class ScreenOverlord {
         }
       }
 
-      this.disableNumericLinks();
-      this.clearKeysPressed();
+      this.resetOverlay();
     }
 
     let isAltS = this.keysPressed.length === 1 && this.keysPressed[0] === 's';
@@ -63,11 +62,16 @@ class ScreenOverlord {
     if (isAltS) {
       e.preventDefault();
       this.focusOnFirstInput();
-      this.clearKeysPressed();
+      this.resetOverlay();
       return;
     }
 
     helpers.logToConsole('Event listeners set up');
+  }
+
+  resetOverlay() {
+    this.disableNumericLinks();
+    this.clearKeysPressed();
   }
 
   onkeydown(e) {
@@ -85,14 +89,12 @@ class ScreenOverlord {
       this.keysPressed.push(e.key);
       helpers.logToConsole('pushed ' + e.key);
     } else if (e.altKey && tabKey) {
-      this.disableNumericLinks();
-      this.clearKeysPressed();
+      this.resetOverlay();
     }
   }
 
   onblur(e) {
-    this.disableNumericLinks();
-    this.clearKeysPressed();
+    this.resetOverlay();
   }
 
   focusOnFirstInput() {
