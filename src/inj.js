@@ -79,10 +79,14 @@ class ScreenOverlord {
 
     let keyCodeBetween0To9 = e.key >= 0 && e.key <= 9;
     let keyCodeS = e.keyCode === 83;
+    let tabKey = e.keyCode === 9;
     if (e.altKey && (keyCodeBetween0To9 || keyCodeS)) {
       e.preventDefault();
       this.keysPressed.push(e.key);
       helpers.logToConsole('pushed ' + e.key);
+    } else if (e.altKey && tabKey) {
+      this.disableNumericLinks();
+      this.clearKeysPressed();
     }
   }
 
