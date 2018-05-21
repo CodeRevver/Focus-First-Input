@@ -1,6 +1,6 @@
 a.focus-first-input-numeric-link {
-  /* position: relative; */
-  /* display: inline-block; */
+  /* position: relative; 
+  display: inline-block; */
 }
 
 a.focus-first-input-numeric-link[focus-first-input-numeric-link-number]:before {

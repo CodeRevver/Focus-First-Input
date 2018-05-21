@@ -124,7 +124,12 @@ class ScreenOverlord {
 
   enableNumericLinks() {
     let i = 1;
-    let linkableElements = Array.from(document.getElementsByTagName("a"));
+    let anchors = Array.from(document.getElementsByTagName('a'));
+    let buttons = Array.from(document.getElementsByTagName('button'));
+    let input = Array.from(document.getElementsByTagName('input'));
+    let select = Array.from(document.getElementsByTagName('select'));
+
+    var linkableElements = [].concat(anchors, buttons, input, select);
     // TODO: Allow buttons, anchors, etc to be here. probably along with anything that has a click event that a user can exploit 
     // Culprit is here
     linkableElements.forEach(function (aLink) {
