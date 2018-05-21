@@ -125,6 +125,8 @@ class ScreenOverlord {
   enableNumericLinks() {
     let i = 1;
     let linkableElements = Array.from(document.getElementsByTagName("a"));
+    // TODO: Allow buttons, anchors, etc to be here. probably along with anything that has a click event that a user can exploit 
+    // Culprit is here
     linkableElements.forEach(function (aLink) {
       if (helpers.elementInViewport(aLink)) {
         aLink.classList.add('focus-first-input-numeric-link');
@@ -183,6 +185,9 @@ class ScreenOverlord {
 };
 
 init = function () {
+  // Consider calling enable overlay links - so setup the links so that they can be called really quicly when pressing alt
+  // Might need to add something called enabled to the stylesheet so that all I have to do is set enabled to true/false so show the overlay
+
   chrome.storage.sync.get(['disableDonateNotification', 'siteExclusionList'], function (result) {
     appSettings.disableDonateNotification = result.disableDonateNotification ? result.disableDonateNotification : false;
     appSettings.siteExclusionList = result.siteExclusionList ? result.siteExclusionList : ['www.google.co.uk', 'www.google.com'];
