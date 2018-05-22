@@ -10,4 +10,5 @@ Todo:
     ☐ etc
   ☐ Fix extension display on this site: http://www.bbc.co.uk/news/business/market-data
   ☐ Focus on first input is focusing on a hidden element on this page: https://www.bbc.co.uk/weather
+  ☐ Potentially order the overlay link from top to bottom (using the top property on the element)
   
