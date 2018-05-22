@@ -31,7 +31,7 @@ let helpers = {
   isDevMode() {
     return !('update_url' in chrome.runtime.getManifest());
   }
-};
+}
 
 class ScreenOverlord {
   constructor() {
@@ -142,7 +142,7 @@ class ScreenOverlord {
 
     this.numericLinkOverlayEnabled = true;
     helpers.logToConsole('numeric links activated');
-  };
+  }
 
   disableNumericLinks() {
     let i = 1;
@@ -155,14 +155,14 @@ class ScreenOverlord {
 
     this.numericLinkOverlayEnabled = false;
     helpers.logToConsole('numeric links deactivated');
-  };
+  }
 
   toggleDonateNotification() {
     let newDonateNotificationSetting = !appSettings.disableDonateNotification;
     chrome.storage.sync.set({ 'disableDonateNotification': newDonateNotificationSetting }, function () {
       helpers.logToConsole('Donate notification set to: ' + newDonateNotificationSetting);
     });
-  };
+  }
 
   addToSiteExclusionList() {
     let siteToAdd = window.location.host;
@@ -170,7 +170,7 @@ class ScreenOverlord {
     chrome.storage.sync.set({ 'siteExclusionList': appSettings.siteExclusionList }, function () {
       helpers.logToConsole('Site exclusion list set to: ' + appSettings.siteExclusionList);
     });
-  };
+  }
 
   removeFromSiteExclusionList() {
     let siteToRemove = window.location.host;
@@ -181,13 +181,13 @@ class ScreenOverlord {
         helpers.logToConsole('Site exclusion list set to: ' + appSettings.siteExclusionList);
       });
     }
-  };
+  }
 
   clearKeysPressed() {
     this.keysPressed = [];
     helpers.logToConsole('cleared keys pressed');
-  };
-};
+  }
+}
 
 init = function () {
   // Consider calling enable overlay links - so setup the links so that they can be called really quicly when pressing alt
@@ -217,6 +217,6 @@ init = function () {
       helpers.logToConsole('Site is exluded - functionality disabled');
     }
   });
-};
+}
 
 init();
