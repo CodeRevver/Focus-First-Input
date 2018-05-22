@@ -1,0 +1,13 @@
+
+Todo:
+  ☐ Add Backspace functionality to delete pushed numbers
+  ☐ Make it a bit more user friendly by displaying the pushed numbers on the screen which allow user to fully utilise the backspace functionality
+  ☐ Make the following available on the overlay
+    ☐ Buttons
+    ☐ Links
+    ☐ Inputs
+    ☐ Dropdowns
+    ☐ etc
+  ☐ Fix extension display on this site: http://www.bbc.co.uk/news/business/market-data
+  ☐ Focus on first input is focusing on a hidden element on this page: https://www.bbc.co.uk/weather
+  
