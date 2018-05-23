@@ -1,5 +1,8 @@
 
 Todo:
+  ✔ Find a way to overlay the elements without modifying existing elements on the dom.  Create new elements and position them so not to affect anybodys site @done(18-05-23 21:56)
+  ☐ When entering numbers like alt 24 it comes up with a weird up arrow etc.  
+    Alt and numbers are definated as symbols etc.  Find a way to stop it from doing that or change the shortcuts
   ☐ Add Backspace functionality to delete pushed numbers
   ☐ Make it a bit more user friendly by displaying the pushed numbers on the screen which allow user to fully utilise the backspace functionality
   ☐ Make the following available on the overlay

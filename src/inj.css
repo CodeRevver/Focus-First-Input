@@ -1,11 +1,12 @@
-a.focus-first-input-numeric-link {
+.focus-first-input-overlay-element {
+  position: fixed;
   /* position: relative; 
   display: inline-block; */
 }
 
-a.focus-first-input-numeric-link[focus-first-input-numeric-link-number]:before {
+.focus-first-input-overlay-element[focus-first-input-overlay-element-number]:before {
   display: inline-block;
-  content: attr(focus-first-input-numeric-link-number);
+  content: attr(focus-first-input-overlay-element-number);
   background-color: black;
   color: white;
   text-align: center;
@@ -22,3 +23,4 @@ a.focus-first-input-numeric-link[focus-first-input-numeric-link-number]:before {
   font-size: 12px;
   font-weight: bold;
 }
+

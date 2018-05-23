@@ -16,6 +16,29 @@ let helpers = {
       }
     }
   },
+  
+  createOverlayElement(rect, linkNumber) {
+    if(rect.top === 0 && rect.left === 0){
+      return null; //// It's not truly on the page - probably hidden but not marked as invisible
+    }
+    
+    let heightOfElement = 18; // Pixels
+    let widthOfElement = linkNumber.toString().length * 5; // Number of characters times the width of one character 
+  
+    // Basically high number - low number halfed is middle then add low number to get dead center 
+    // but take away half of height/width of element to take into account element height/width
+    let middleishPosition = (rect.bottom - rect.top)/2 + (rect.top - (heightOfElement/2));
+    let centerishPosition = (rect.right - rect.left)/2 + (rect.left - (widthOfElement/2));
+    overlayElement = document.createElement('div');
+    overlayElement.style.top = middleishPosition.toString() + 'px';
+    overlayElement.style.left = centerishPosition.toString() + 'px';
+
+    overlayElement.classList.add('focus-first-input-overlay-element');
+    overlayElement.setAttribute('focus-first-input-overlay-element-number', linkNumber);
+    document.body.appendChild(overlayElement);
+
+    return overlayElement;
+  },
 
   elementInViewport(el) {
     let rect = el.getBoundingClientRect();
@@ -36,20 +59,22 @@ let helpers = {
 class ScreenOverlord {
   constructor() {
     this.keysPressed = [];
-    this.numericLinkOverlayEnabled = false;
+    this.overlayEnabled = false;
   }
 
   onkeyup(e) {
-    if (e.keyCode === 18 && this.numericLinkOverlayEnabled) {
+    if (e.keyCode === 18 && this.overlayEnabled) {
       helpers.logToConsole('released alt key');
       e.preventDefault();
 
       if (this.keysPressed.length > 0) {
         //// Has some numbers
-        let numericValueOfLink = this.keysPressed.join('');
-        helpers.logToConsole('keys pressed: alt+' + numericValueOfLink);
-        let elementToClick = document.querySelector('[focus-first-input-numeric-link-number="' + numericValueOfLink + '"]');
+        let numericValueOfElement = this.keysPressed.join('');
+        helpers.logToConsole('keys pressed: alt+' + numericValueOfElement);
+        let elementToClick = document.querySelector('[focus-first-input-element-id="' + numericValueOfElement + '"]');
         if (elementToClick) {
+          // Todo split out the code to focus on first input (alt s) and use it here as well
+          elementToClick.focus()
           elementToClick.click();
         }
       }
@@ -65,20 +90,18 @@ class ScreenOverlord {
       this.resetOverlay();
       return;
     }
-
-    helpers.logToConsole('Event listeners set up');
   }
 
   resetOverlay() {
-    this.disableNumericLinks();
+    this.disableOverlay();
     this.clearKeysPressed();
   }
 
   onkeydown(e) {
-    if (e.altKey && !this.numericLinkOverlayEnabled) {
+    if (e.altKey && !this.overlayEnabled) {
       // Alt key pressed by itself
       e.preventDefault();
-      this.enableNumericLinks();
+      this.enableOverlay();
     }
 
     let keyCodeBetween0To9 = e.key >= 0 && e.key <= 9;
@@ -97,6 +120,7 @@ class ScreenOverlord {
     this.resetOverlay();
   }
 
+  // Todo I should break this out so that I can call it from other code that people use to click an input
   focusOnFirstInput() {
     if (document.activeElement.tagName != "input") {
       let inputs = document.body.getElementsByTagName("input")
@@ -122,39 +146,39 @@ class ScreenOverlord {
     }
   }
 
-  enableNumericLinks() {
-    let i = 1;
+  enableOverlay() {
     let anchors = Array.from(document.getElementsByTagName('a'));
     let buttons = Array.from(document.getElementsByTagName('button'));
     let input = Array.from(document.getElementsByTagName('input'));
     let select = Array.from(document.getElementsByTagName('select'));
-
-    var linkableElements = [].concat(anchors, buttons, input, select);
-    // TODO: Allow buttons, anchors, etc to be here. probably along with anything that has a click event that a user can exploit 
-    // Culprit is here
-    linkableElements.forEach(function (aLink) {
-      if (helpers.elementInViewport(aLink)) {
-        aLink.classList.add('focus-first-input-numeric-link');
-        aLink.setAttribute('focus-first-input-numeric-link-number', i);
-        i++;
+    let clickableElements = [].concat(anchors, buttons, input, select);
+    
+    let i = 1;
+    clickableElements.forEach(function (element) {
+      if (helpers.elementInViewport(element)) {
+        let rect = element.getBoundingClientRect();
+        let overlayElement = helpers.createOverlayElement(rect, i);
+        if (overlayElement) {          
+          element.setAttribute('focus-first-input-element-id', i);
+          i++;
+        }
       }
     });
 
-    this.numericLinkOverlayEnabled = true;
-    helpers.logToConsole('numeric links activated');
+    this.overlayEnabled = true;
+    helpers.logToConsole(i + ' clickable elements activated');
   }
 
-  disableNumericLinks() {
+  disableOverlay() {
     let i = 1;
-    let linkableElements = Array.from(document.getElementsByTagName("a"));
-    linkableElements.forEach(function (aLink) {
-      aLink.classList.remove('focus-first-input-numeric-link');
-      aLink.removeAttribute('focus-first-input-numeric-link-number');
+    let clickableElements = Array.from(document.getElementsByClassName('focus-first-input-overlay-element'));
+    clickableElements.forEach(function (element) {
+      element.remove();
       i++;
     });
 
-    this.numericLinkOverlayEnabled = false;
-    helpers.logToConsole('numeric links deactivated');
+    this.overlayEnabled = false;
+    helpers.logToConsole(i + ' clickable elements deactivated');
   }
 
   toggleDonateNotification() {
@@ -200,7 +224,7 @@ init = function () {
 
     let siteIsExcluded = appSettings.siteExclusionList.includes(window.location.host);
     if (!siteIsExcluded) {
-      var screenOverlord = new ScreenOverlord();
+      let screenOverlord = new ScreenOverlord();
 
       document.onkeyup = function (e) {
         screenOverlord.onkeyup(e);
@@ -213,6 +237,8 @@ init = function () {
       window.onblur = function (e) {
         screenOverlord.onblur(e);
       }
+      
+      helpers.logToConsole('Event listeners set up');
     } else {
       helpers.logToConsole('Site is exluded - functionality disabled');
     }
