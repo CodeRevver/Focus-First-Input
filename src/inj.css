@@ -1,5 +1,6 @@
 .focus-first-input-overlay-element {
-  position: fixed;
+  position: absolute;
+  z-index: 2147483647; /* Chromes maximum z-index - lol.  Don't know how else to do this without js...  Needs to be on top of all the content on any site */
   /* position: relative; 
   display: inline-block; */
 }
