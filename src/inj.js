@@ -1,12 +1,13 @@
 // GLOBALS
 let appSettings = {
   disableDonateNotification: false,
-  siteExclusionList: []
+  siteExclusionList: [],
+  isDevMode: false
 }
 
 let helpers = {
   logToConsole(message, logLevel = 'debug') {
-    if (this.isDevMode()) {
+    if (appSettings.isDevMode) {
       switch (logLevel) {
         case 'error': console.error(message); break;
         case 'warn': console.warn(message); break;
@@ -16,19 +17,19 @@ let helpers = {
       }
     }
   },
-  
+
   createOverlayElement(rect, linkNumber) {
-    if(rect.top === 0 && rect.left === 0){
+    if (rect.top === 0 && rect.left === 0) {
       return null; //// It's not truly on the page - probably hidden but not marked as invisible
     }
-    
+
     let heightOfElement = 18; // Pixels
     let widthOfElement = linkNumber.toString().length * 5; // Number of characters times the width of one character 
-  
-    // Basically high number - low number halfed is middle then add low number to get dead center 
-    // but take away half of height/width of element to take into account element height/width
-    let middleishPosition = (rect.bottom - rect.top)/2 + (rect.top - (heightOfElement/2));
-    let centerishPosition = (rect.right - rect.left)/2 + (rect.left - (widthOfElement/2));
+
+    // High number - low number halfed is middle then add low number to get dead center then...
+    // take away half of height/width of element to take into account element height/width
+    let middleishPosition = (rect.bottom - rect.top) / 2 + (rect.top - (heightOfElement / 2));
+    let centerishPosition = (rect.right - rect.left) / 2 + (rect.left - (widthOfElement / 2));
     overlayElement = document.createElement('div');
     overlayElement.style.top = middleishPosition.toString() + 'px';
     overlayElement.style.left = centerishPosition.toString() + 'px';
@@ -43,16 +44,63 @@ let helpers = {
   elementInViewport(el) {
     let rect = el.getBoundingClientRect();
 
-    return (
+    var isOnViewPort = (
       rect.top >= 0 &&
       rect.left >= 0 &&
       rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
       rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
+
+    var isVisible = false;
+    if (isOnViewPort && helpers.isVisible(el)) {
+      if (rect.height === 1 && rect.width === 1) {
+        // Check for Shoddily programmed visibility
+        isVisible = false;
+      } else {
+        isVisible = true;
+      }
+    }
+
+    return isOnViewPort && isVisible;
+  },
+
+  isVisible(el) {
+    if ((el.nodeType !== 1) || (el === document.body)) {
+      return true;
+    }
+    
+    if (el.attributes['aria-hidden'] && el.attributes['aria-hidden'].value === 'true') {
+      return false;
+    }
+
+    if (el.currentStyle && el.currentStyle['display'] !== 'none' && el.currentStyle['visibility'] !== 'hidden') {
+      return helpers.isVisible(el.parentNode);
+    } else if (window.getComputedStyle) {
+      var cs = document.defaultView.getComputedStyle(el, null);
+      if (cs.getPropertyValue('display') !== 'none' && cs.getPropertyValue('visibility') !== 'hidden') {
+        return helpers.isVisible(el.parentNode);
+      }
+    }
+    return false;
   },
 
   isDevMode() {
-    return !('update_url' in chrome.runtime.getManifest());
+    // Make sure the chrome.runtime.getManifest() function exists
+    if (typeof chrome == 'object' && typeof chrome.runtime == 'object' && typeof chrome.runtime.getManifest == 'function') {
+      var manifest = chrome.runtime.getManifest();
+      if (!manifest) {
+        return false;
+      }
+
+      if (typeof manifest.key == 'undefined' && typeof manifest.update_url == 'undefined') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    // We are unsure if the extension is installed or in developer mode. Assume installed.
+    return false;
   }
 }
 
@@ -122,12 +170,12 @@ class ScreenOverlord {
 
   // Todo I should break this out so that I can call it from other code that people use to click an input
   focusOnFirstInput() {
-    if (document.activeElement.tagName != "input") {
-      let inputs = document.body.getElementsByTagName("input")
+    if (document.activeElement.tagName != 'input') {
+      let inputs = document.body.getElementsByTagName('input')
       let focused = false
       for (let i = 0; i < inputs.length; i++) {
         let input = inputs[i]
-        if (helpers.elementInViewport(input) && (input.type == "text" || input.type == "search")) {
+        if (helpers.elementInViewport(input) && (input.type == 'text' || input.type == 'search')) {
           input.focus()
           focused = true
           break
@@ -152,13 +200,13 @@ class ScreenOverlord {
     let input = Array.from(document.getElementsByTagName('input'));
     let select = Array.from(document.getElementsByTagName('select'));
     let clickableElements = [].concat(anchors, buttons, input, select);
-    
+
     let i = 1;
     clickableElements.forEach(function (element) {
       if (helpers.elementInViewport(element)) {
         let rect = element.getBoundingClientRect();
         let overlayElement = helpers.createOverlayElement(rect, i);
-        if (overlayElement) {          
+        if (overlayElement) {
           element.setAttribute('focus-first-input-element-id', i);
           i++;
         }
@@ -214,8 +262,7 @@ class ScreenOverlord {
 }
 
 init = function () {
-  // Consider calling enable overlay links - so setup the links so that they can be called really quicly when pressing alt
-  // Might need to add something called enabled to the stylesheet so that all I have to do is set enabled to true/false so show the overlay
+  appSettings.isDevMode = helpers.isDevMode();
 
   chrome.storage.sync.get(['disableDonateNotification', 'siteExclusionList'], function (result) {
     appSettings.disableDonateNotification = result.disableDonateNotification ? result.disableDonateNotification : false;
@@ -237,7 +284,7 @@ init = function () {
       window.onblur = function (e) {
         screenOverlord.onblur(e);
       }
-      
+
       helpers.logToConsole('Event listeners set up');
     } else {
       helpers.logToConsole('Site is exluded - functionality disabled');

@@ -1,11 +1,13 @@
 
 Todo:
   ✔ Find a way to overlay the elements without modifying existing elements on the dom.  Create new elements and position them so not to affect anybodys site @done(18-05-23 21:56)
-  ☐ When entering numbers like alt 24 it comes up with a weird up arrow etc.  
-    Alt and numbers are definated as symbols etc.  Find a way to stop it from doing that or change the shortcuts
+  ✔ Fix the elements that have overlays but are not truly clickable- things like aria-hidden and 1px width and height elements @done(18-05-25 20:33)
+    This is going to be ongoing...
+  ☐ Fix positioning of absolute positioned overlay.  Doesn't seem to work with scrolling
+  ☐ When entering numbers like alt 24 it comes up with a weird up arrow etc.  Find a way to stop it from doing that or change the shortcuts
   ☐ Add Backspace functionality to delete pushed numbers
   ☐ Make it a bit more user friendly by displaying the pushed numbers on the screen which allow user to fully utilise the backspace functionality
-  ☐ Make the following available on the overlay
+  ☐ Make the following available and fully functional on the overlay
     ☐ Buttons
     ☐ Links
     ☐ Inputs
@@ -15,4 +17,8 @@ Todo:
   ☐ Focus on first input is focusing on a hidden element on this page: https://www.bbc.co.uk/weather
   ☐ Potentially order the overlay link from top to bottom (using the top property on the element)
   ☐ If a user resizes the browser with alt held we should force the overlay to disable
+  ☐ Add settings to enable/disable the overlay/find first input
+  ☐ Add Exclusion list
+  ☐ Add Donate button and setting to show/never show again
+  ☐ Test the extension
   
