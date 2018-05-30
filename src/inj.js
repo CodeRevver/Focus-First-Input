@@ -23,13 +23,21 @@ let helpers = {
       return null; //// It's not truly on the page - probably hidden but not marked as invisible
     }
 
-    let heightOfElement = 18; // Pixels
-    let widthOfElement = linkNumber.toString().length * 5; // Number of characters times the width of one character 
+    // Window positioning
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    var overlayTop = scrollTop + rect.top;
+    var overlayBottom = scrollTop + rect.bottom;
+    var overlayLeft = scrollLeft + rect.left;
+    var overlayRight = scrollLeft + rect.right;
+
+    let heightOfElement = 20; // Pixels
+    let widthOfElement = linkNumber.toString().length * 15; // Number of characters times the width of one character (alongside padding)
 
     // High number - low number halfed is middle then add low number to get dead center then...
     // take away half of height/width of element to take into account element height/width
-    let middleishPosition = (rect.bottom - rect.top) / 2 + (rect.top - (heightOfElement / 2));
-    let centerishPosition = (rect.right - rect.left) / 2 + (rect.left - (widthOfElement / 2));
+    let middleishPosition = (overlayBottom - overlayTop) / 2 + (overlayTop - (heightOfElement / 2));
+    let centerishPosition = (overlayRight - overlayLeft) / 2 + (overlayLeft - (widthOfElement / 2));
     overlayElement = document.createElement('div');
     overlayElement.style.top = middleishPosition.toString() + 'px';
     overlayElement.style.left = centerishPosition.toString() + 'px';
@@ -68,7 +76,7 @@ let helpers = {
     if ((el.nodeType !== 1) || (el === document.body)) {
       return true;
     }
-    
+
     if (el.attributes['aria-hidden'] && el.attributes['aria-hidden'].value === 'true') {
       return false;
     }
