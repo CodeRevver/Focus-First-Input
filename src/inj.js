@@ -119,9 +119,9 @@ class ScreenOverlord {
   }
 
   onkeyup(e) {
+    e.preventDefault();
     if (e.keyCode === 18 && this.overlayEnabled) {
       helpers.logToConsole('released alt key');
-      e.preventDefault();
 
       if (this.keysPressed.length > 0) {
         //// Has some numbers
@@ -154,9 +154,9 @@ class ScreenOverlord {
   }
 
   onkeydown(e) {
+    e.preventDefault();
     if (e.altKey && !this.overlayEnabled) {
       // Alt key pressed by itself
-      e.preventDefault();
       this.enableOverlay();
     }
 
@@ -164,7 +164,6 @@ class ScreenOverlord {
     let keyCodeS = e.keyCode === 83;
     let tabKey = e.keyCode === 9;
     if (e.altKey && (keyCodeBetween0To9 || keyCodeS)) {
-      e.preventDefault();
       this.keysPressed.push(e.key);
       helpers.logToConsole('pushed ' + e.key);
     } else if (e.altKey && tabKey) {
