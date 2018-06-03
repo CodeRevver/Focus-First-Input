@@ -119,7 +119,6 @@ class ScreenOverlord {
   }
 
   onkeyup(e) {
-    e.preventDefault();
     if (e.keyCode === 18 && this.overlayEnabled) {
       helpers.logToConsole('released alt key');
 
@@ -141,7 +140,6 @@ class ScreenOverlord {
     let isAltS = this.keysPressed.length === 1 && this.keysPressed[0] === 's';
 
     if (isAltS) {
-      e.preventDefault();
       this.focusOnFirstInput();
       this.resetOverlay();
       return;
@@ -154,9 +152,9 @@ class ScreenOverlord {
   }
 
   onkeydown(e) {
-    e.preventDefault();
     if (e.altKey && !this.overlayEnabled) {
       // Alt key pressed by itself
+      e.preventDefault();
       this.enableOverlay();
     }
 
@@ -164,6 +162,7 @@ class ScreenOverlord {
     let keyCodeS = e.keyCode === 83;
     let tabKey = e.keyCode === 9;
     if (e.altKey && (keyCodeBetween0To9 || keyCodeS)) {
+      e.preventDefault();
       this.keysPressed.push(e.key);
       helpers.logToConsole('pushed ' + e.key);
     } else if (e.altKey && tabKey) {
@@ -279,6 +278,15 @@ init = function () {
     let siteIsExcluded = appSettings.siteExclusionList.includes(window.location.host);
     if (!siteIsExcluded) {
       let screenOverlord = new ScreenOverlord();
+      
+      document.onkeypress = keypress;
+
+      function keypress(e){
+        //// Will only happen if alt is pressed along with a numeric value
+        if(e.code === 'AltLeft'){
+          e.preventDefault();
+        }
+      }
 
       document.onkeyup = function (e) {
         screenOverlord.onkeyup(e);
