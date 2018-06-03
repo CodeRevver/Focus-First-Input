@@ -73,6 +73,12 @@ let helpers = {
   },
 
   isVisible(el) {
+        // Scroll left from parent?  Check this https://www.bbc.co.uk/weather/0/2647570
+    // Carousels wont work - things with scrollable overflows
+
+    // Will need to recurse through each element to the body and check the scrollLeft of it.  This will solve the above.
+    // I'll need some logic to determine if the scrollleft is enough to make the left of the element go off screen (overflowed)
+    
     if ((el.nodeType !== 1) || (el === document.body)) {
       return true;
     }

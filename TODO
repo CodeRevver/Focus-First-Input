@@ -5,6 +5,7 @@ Todo:
     This is going to be ongoing...
   ✔ Fix positioning of absolute positioned overlay.  Doesn't seem to work with scrolling @done(18-05-27 21:49)
   ✔ When entering numbers like alt 24 it comes up with a weird up arrow etc.  Find a way to stop it from doing that or change the shortcuts @done(18-06-03 19:39)
+  ☐ Write some logic to account for parent overflows, more info here: (Line 75 = isVisible(el))
   ☐ Add Backspace functionality to delete pushed numbers
   ☐ Make it a bit more user friendly by displaying the pushed numbers on the screen which allow user to fully utilise the backspace functionality
   ☐ Make the following available and fully functional on the overlay
