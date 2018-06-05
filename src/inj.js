@@ -256,7 +256,9 @@ class ScreenOverlord {
     });
 
     var createKeysPressedInputOverlayElement = document.getElementById('keysPressedInputOverlay');
-    createKeysPressedInputOverlayElement.remove();
+    if(createKeysPressedInputOverlayElement) {
+      createKeysPressedInputOverlayElement.remove();
+    }
 
     this.overlayEnabled = false;
     helpers.logToConsole(i + ' clickable elements deactivated');
