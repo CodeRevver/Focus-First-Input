@@ -38,7 +38,7 @@ let helpers = {
     // take away half of height/width of element to take into account element height/width
     let middleishPosition = (overlayBottom - overlayTop) / 2 + (overlayTop - (heightOfElement / 2));
     let centerishPosition = (overlayRight - overlayLeft) / 2 + (overlayLeft - (widthOfElement / 2));
-    overlayElement = document.createElement('div');
+    var overlayElement = document.createElement('div');
     overlayElement.style.top = middleishPosition.toString() + 'px';
     overlayElement.style.left = centerishPosition.toString() + 'px';
 
@@ -47,6 +47,19 @@ let helpers = {
     document.body.appendChild(overlayElement);
 
     return overlayElement;
+  },
+
+  createKeysPressedInputOverlay() {
+    var keysPressedInputOverlayElement = document.createElement('div');
+    keysPressedInputOverlayElement.id = 'keysPressedInputOverlay';
+    keysPressedInputOverlayElement.innerHTML = 'ALT + ';
+    keysPressedInputOverlayElement.classList.add('keys-pressed-overlay-element');
+    document.body.appendChild(keysPressedInputOverlayElement);
+  },
+
+  updateKeysPressedInputOverlay(pushedKey) {
+    var keysPressedInputOverlayElement = document.getElementById('keysPressedInputOverlay');
+    keysPressedInputOverlayElement.innerHTML = keysPressedInputOverlayElement.innerHTML + pushedKey;
   },
 
   elementInViewport(el) {
@@ -73,7 +86,7 @@ let helpers = {
   },
 
   isVisible(el) {
-        // Scroll left from parent?  Check this https://www.bbc.co.uk/weather/0/2647570
+    // Scroll left from parent?  Check this https://www.bbc.co.uk/weather/0/2647570
     // Carousels wont work - things with scrollable overflows
 
     // Will need to recurse through each element to the body and check the scrollLeft of it.  This will solve the above.
@@ -170,6 +183,7 @@ class ScreenOverlord {
     if (e.altKey && (keyCodeBetween0To9 || keyCodeS)) {
       e.preventDefault();
       this.keysPressed.push(e.key);
+      helpers.updateKeysPressedInputOverlay(e.key);
       helpers.logToConsole('pushed ' + e.key);
     } else if (e.altKey && tabKey) {
       this.resetOverlay();
@@ -207,6 +221,7 @@ class ScreenOverlord {
   }
 
   enableOverlay() {
+    // Inputs/clickables
     let anchors = Array.from(document.getElementsByTagName('a'));
     let buttons = Array.from(document.getElementsByTagName('button'));
     let input = Array.from(document.getElementsByTagName('input'));
@@ -225,6 +240,9 @@ class ScreenOverlord {
       }
     });
 
+    // Enable text input display
+    helpers.createKeysPressedInputOverlay();
+
     this.overlayEnabled = true;
     helpers.logToConsole(i + ' clickable elements activated');
   }
@@ -236,6 +254,9 @@ class ScreenOverlord {
       element.remove();
       i++;
     });
+
+    var createKeysPressedInputOverlayElement = document.getElementById('keysPressedInputOverlay');
+    createKeysPressedInputOverlayElement.remove();
 
     this.overlayEnabled = false;
     helpers.logToConsole(i + ' clickable elements deactivated');
