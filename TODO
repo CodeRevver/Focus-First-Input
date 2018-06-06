@@ -8,6 +8,7 @@ Todo:
   ✔ Add an overlay in to display the current keys pressed - will be useful later when we allow people to backspace and delete a pushed character @done(18-06-05 22:08)
   ☐ For some reason on AOL mail the extenison isn't working.  It seems to be disabling the onkeydown event trigger - onkeyup works though.  Not sure why.
     https://mail.aol.com/webmail-std/en-us/suite
+  ☐ Stackify takes ages to create the overlay elements.  Something's taking too long to process 
   ☐ Write some logic to account for parent overflows, more info here: (Line 75 = isVisible(el))
   ☐ Add Backspace functionality to delete pushed numbers
   ☐ Make it a bit more user friendly by displaying the pushed numbers on the screen which allow user to fully utilise the backspace functionality

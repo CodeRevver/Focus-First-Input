@@ -32,7 +32,7 @@ let helpers = {
     var overlayRight = scrollLeft + rect.right;
 
     let heightOfElement = 20; // Pixels
-    let widthOfElement = linkNumber.toString().length * 15; // Number of characters times the width of one character (alongside padding)
+    let widthOfElement = linkNumber.toString().length * 12; // Number of characters times the width of one character (alongside padding)
 
     // High number - low number halfed is middle then add low number to get dead center then...
     // take away half of height/width of element to take into account element height/width
@@ -82,7 +82,12 @@ let helpers = {
       }
     }
 
-    return isOnViewPort && isVisible;
+    var isTabbable = true;
+    if (el.attributes['tabindex'] && el.attributes['tabindex'].value === '-1') {
+      isTabbable = false; // Don't allow any focus on tabindex -1
+    }
+
+    return isOnViewPort && isVisible && isTabbable;
   },
 
   isVisible(el) {
