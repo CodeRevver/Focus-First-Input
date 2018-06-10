@@ -83,9 +83,10 @@ let helpers = {
     }
 
     var isTabbable = true;
-    if (el.attributes['tabindex'] && el.attributes['tabindex'].value === '-1') {
-      isTabbable = false; // Don't allow any focus on tabindex -1
-    }
+    // Commented out because a lot of things that aren't tabbable are still clickable
+    // if (el.attributes['tabindex'] && el.attributes['tabindex'].value === '-1') {
+    //   isTabbable = false; // Don't allow any focus on tabindex -1
+    // }
 
     return isOnViewPort && isVisible && isTabbable;
   },
