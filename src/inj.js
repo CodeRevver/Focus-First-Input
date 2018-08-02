@@ -97,7 +97,7 @@ let helpers = {
 
     // Will need to recurse through each element to the body and check the scrollLeft of it.  This will solve the above.
     // I'll need some logic to determine if the scrollleft is enough to make the left of the element go off screen (overflowed)
-    
+
     if ((el.nodeType !== 1) || (el === document.body)) {
       return true;
     }
@@ -106,14 +106,15 @@ let helpers = {
       return false;
     }
 
-    if (el.currentStyle && el.currentStyle['display'] !== 'none' && el.currentStyle['visibility'] !== 'hidden') {
+    if (el.currentStyle && el.currentStyle['display'] !== 'none' && el.currentStyle['visibility'] !== 'hidden' && el.currentStyle['opacity'] !== '0') {
       return helpers.isVisible(el.parentNode);
     } else if (window.getComputedStyle) {
       var cs = document.defaultView.getComputedStyle(el, null);
-      if (cs.getPropertyValue('display') !== 'none' && cs.getPropertyValue('visibility') !== 'hidden') {
+      if (cs.getPropertyValue('display') !== 'none' && cs.getPropertyValue('visibility') !== 'hidden' && cs.getPropertyValue('opacity') !== '0') {
         return helpers.isVisible(el.parentNode);
       }
     }
+    
     return false;
   },
 
@@ -262,7 +263,7 @@ class ScreenOverlord {
     });
 
     var createKeysPressedInputOverlayElement = document.getElementById('keysPressedInputOverlay');
-    if(createKeysPressedInputOverlayElement) {
+    if (createKeysPressedInputOverlayElement) {
       createKeysPressedInputOverlayElement.remove();
     }
 
@@ -313,12 +314,12 @@ init = function () {
     let siteIsExcluded = appSettings.siteExclusionList.includes(window.location.host);
     if (!siteIsExcluded) {
       let screenOverlord = new ScreenOverlord();
-      
+
       document.onkeypress = keypress;
 
-      function keypress(e){
+      function keypress(e) {
         //// Will only happen if alt is pressed along with a numeric value
-        if(e.code === 'AltLeft'){
+        if (e.code === 'AltLeft') {
           e.preventDefault();
         }
       }
